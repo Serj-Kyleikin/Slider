@@ -1,34 +1,27 @@
 
-let slides = document.getElementsByClassName("slide");
-slides[sliderSettings.startIndex - 1].classList.add('slide_active');
+let dots = document.getElementsByClassName("dot"), 
+  slides = document.getElementsByClassName("slide"), timerId, autoTimerId;
 
-let dots = document.getElementsByClassName("dot");
-dots[sliderSettings.startIndex - 1].classList.add('dot_active');
+showSlide(settings.slide);   // Запуск слайдера
 
-let timerId, autoTimerId;
-showSlides(sliderSettings.startIndex);
+function showSlide(Index) {
 
-// Запуск слайдера
+    document.querySelector('.slide.active').className = 'slide';
+    slides[Index - 1].className += ' active';
 
-function showSlides(slideIndex) {
+    document.querySelector('.dot.active').className = 'dot';
+    dots[Index - 1].className += ' active';
 
-    document.querySelector('.slide_active').classList.remove('slide_active');
-    slides[slideIndex-1].classList.add('slide_active');
-
-    document.querySelector('.dot_active').classList.remove('dot_active');
-    dots[slideIndex-1].classList.add('dot_active');
-
-    if(sliderSettings.auto == true) {
-        timerId = setTimeout(changeSlide, sliderSettings.time);
-    } else {
+    if(!settings.auto) {
 
         if(timerId) {
             clearInterval(timerId);
             timerId = undefined;
         }
         
-        autoTimerId = setTimeout(changeSlide, sliderSettings.delay);
-    }
+        autoTimerId = setTimeout(changeSlide, settings.delay);
+
+    } else timerId = setTimeout(changeSlide, settings.time);
 }
 
 // Смена слайда
@@ -40,58 +33,29 @@ function changeSlide() {
         autoTimerId = undefined;
     }
 
-    sliderSettings.auto = true;             // Восстановление нормального времени автосмены слайдов
-    sliderSettings.navigationIndex += 1;
+    settings.auto = true;
+    settings.slide = (settings.slide == slides.length) ? 1 : settings.slide + 1;
 
-    if(sliderSettings.navigationIndex  > sliderSettings.limit) {
-        sliderSettings.navigationIndex = 1;
-    }
-
-    showSlides(sliderSettings.navigationIndex);
+    showSlide(settings.slide);
 }
 
 // Навигация слайдера
 
-function plusSlides(n) {
+function switchSlide(n, check = 0) {
 
-    let navigationIndex = sliderSettings.navigationIndex;
-    let page = navigationIndex + n;
-
-    sliderSettings.auto = false;        // Увеличение времени на просмотр слайда до 10 секунд
+    settings.auto = false;        // Увеличение времени на просмотр слайда до 10 секунд
 
     if(autoTimerId) {
         clearInterval(autoTimerId);
         autoTimerId = undefined;
     }
 
-    if(page > slides.length) {
+    if(check) {
 
-        sliderSettings.navigationIndex = 1;
-        showSlides(1);
+        let page = settings.slide + n;
+        settings.slide = (page == 0) ? slides.length : (page > slides.length ? 1 : page);
 
-    } else if(page == 0) {
+    } else settings.slide = n;
 
-        sliderSettings.navigationIndex = slides.length;
-        showSlides(slides.length);
-
-    } else {
-
-        sliderSettings.navigationIndex = page;
-        showSlides(page);
-    }
-}
-
-// Дотсы слайдера
-
-function currentSlide(n) {
-
-    sliderSettings.auto = false;        // Увеличение времени на просмотр слайда до 10 секунд
-
-    if(autoTimerId) {
-        clearInterval(autoTimerId);
-        autoTimerId = undefined;
-    }
-
-    sliderSettings.navigationIndex = n;
-    showSlides(n);
+    showSlide(settings.slide);
 }

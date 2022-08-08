@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <title>Слайдер</title>
@@ -12,24 +11,24 @@
 
 <?php
 
-$slides = glob($_SERVER['DOCUMENT_ROOT'] . '/slides/*');
-$count = count($slides);
-
+    $slides = glob($_SERVER['DOCUMENT_ROOT'] . '/slides/*');
+    $count = count($slides);
+    $start = 1;
 ?>
-    
+
 <div class="slider">
     <div class="slides">
-            <? foreach($slides as $slide): ?>
-                <div class="slide"><img src="<? echo '/slides/' . explode('/slides/', $slide)[1]; ?>"></div>
-            <? endforeach; ?>
+            <? for($i = 0; $i < $count; $i++): ?>
+                <img class="slide <? if($i == $start-1) { echo 'active'; } ?>" src="<? echo '/slides/' . explode('/slides/', $slides[$i])[1]; ?>">
+            <? endfor; ?>
         <div class="navigation">
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <a class="prev" onclick="switchSlide(-1, 1)">&#10094;</a>
+            <a class="next" onclick="switchSlide(1, 1)">&#10095;</a>
         </div>
     </div>
     <div class="dots">
-        <? for($i = 1; $i < $count + 1; $i++): ?>
-            <span class="dot" onclick="currentSlide(<? echo $i; ?>)"></span>
+        <? for($d = 1; $d < $count + 1; $d++): ?>
+            <span class="dot <? if($d == $start) { echo 'active'; } ?>" onclick="switchSlide(<?= $d; ?>)"></span>
         <? endfor; ?>
     </div>
 </div>
@@ -38,11 +37,9 @@ $count = count($slides);
 
     <script type="text/javascript">
 
-        const sliderSettings = {
+        const settings = {
 
-            startIndex: 1,
-            navigationIndex: 1,
-            limit: <? echo $count; ?>,
+            slide: <?= $start; ?>,
             auto: true,
             time: 5000,
             delay: 10000

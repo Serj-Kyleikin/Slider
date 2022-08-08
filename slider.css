@@ -5,33 +5,29 @@
     flex-direction: column;
     align-items: center;
 }
-.slider > .slides {
+.slides {
     width: 100%;
     position: relative;
     border-radius: 4px;
     box-shadow: 3px 3px 4px rgba(119, 119, 119, 0.42);
 }
-.slider > .slides > .slide {
+.slide {
     display: none;
 }
-.slide > img {
-    width: 100%;
-}
-.slider > .slides > .slide_active {
+.slides > .active {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 80px;
     width: 100%;
-    padding: 1% 35px;
+    padding: 0 35px;
     border-radius: 4px;
     background: rgba(36, 96, 178, 0.54);
     color: #ffffff;
-    font-size: 1.4em;
 }
 
-.slider > .slides > .navigation {
+.navigation {
     position: absolute;
     top: 0;
     left: 0;
@@ -41,7 +37,7 @@
     justify-content: space-between;
     align-items: center;
 }
-.slider > .slides > .navigation > .prev, .next {
+.navigation > .prev, .next {
     cursor: pointer;
     top: 50%;
     width: auto;
@@ -51,15 +47,15 @@
     font-size: 18px;
     transition: 0.6s ease;
 }
-.slider > .slides > .navigation > .prev:hover, .next:hover {
+.navigation > .prev:hover, .next:hover {
     background-color: rgba(36, 96, 178, 0.54);
 }
 
-.slider > .dots {
+.dots {
     margin-top: 3%;
     display: flex;
 }
-.slider > .dots > .dot {
+.dot {
     cursor: pointer;
     height: 13px;
     width: 13px;
@@ -69,10 +65,10 @@
     display: inline-block;
     transition: background-color 0.6s ease;
 }
-.slider > .dots > .dot:hover {
+.dot:hover {
     background-color: #717171;
 }
-.slider > .dots > .dot_active {
+.dots > .active {
     background-color: #717171;
 }
 
